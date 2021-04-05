@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: predictor
+  name: predictor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: predictor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: predictor
+    spec:
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/predictor
+        imagePullPolicy: IfNotPresent
+        #command: [ "/bin/bash", "-c", "--" ]
+        #args: [ "while true; do sleep 30; done;" ]
+        name: predictor
+        resources:
+           requests:
+             memory: "2048Mi"
+             cpu: "1"
+           limits:
+             memory: "2048Mi"
+             cpu: "1"
+      restartPolicy: Always
+status: {}

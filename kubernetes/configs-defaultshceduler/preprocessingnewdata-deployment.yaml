@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: preprocessingnewdata
+  name: preprocessingnewdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preprocessingnewdata
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: preprocessingnewdata
+    spec:
+      volumes:
+        - name: pv-workflow2
+          persistentVolumeClaim:
+            claimName: pvc-workflow2
+        - name: pv-tracker2
+          persistentVolumeClaim:
+            claimName: pvc-tracker2 
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/preprocessing
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        name: preprocessingnewdata
+        resources: {}
+        volumeMounts:
+        - mountPath: /app
+          name: pv-workflow2
+        - mountPath: /mlflow
+          name: pv-tracker2
+      restartPolicy: Always
+status: {}

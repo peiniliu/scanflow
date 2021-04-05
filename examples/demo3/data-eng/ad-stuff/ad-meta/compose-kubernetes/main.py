@@ -2,26 +2,26 @@
 import os
 import sys
 
-path = '/'
+path = '/home/guess/Desktop/scanflow'
 sys.path.append(path)
 
 from scanflow.setup import setup
 from scanflow.run import run
 
 # App folder
-app_dir = '//examples/demo3/data-eng/'
+app_dir = '/gpfs/bsc_home/xpliu/scanflow/examples/demo3/data-eng/'
 
 # Workflows
 workflow1 = [
-    {'name': 'gathering-20200303143337', 'file': 'gathering.py',
+    {'name': 'gathering-20210107114629', 'file': 'gathering.py',
             'env': 'gathering'},
 
-    {'name': 'preprocessing-20200303143337', 'file': 'preprocessing.py',
+    {'name': 'preprocessing-20210107114629', 'file': 'preprocessing.py',
             'env': 'preprocessing'},
 
 ]
 workflow2 = [
-    {'name': 'modeling-20200303143337', 'file': 'modeling.py',
+    {'name': 'modeling-20210107114629', 'file': 'modeling.py',
             'env': 'modeling'},
 
 

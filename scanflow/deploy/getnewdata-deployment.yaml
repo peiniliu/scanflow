@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: getnewdata
+  name: getnewdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: getnewdata
+  template:
+    metadata:
+      labels:
+        app: getnewdata
+    spec:
+      volumes:
+        - name: pv-workflow2
+          persistentVolumeClaim:
+            claimName: pvc-workflow2
+        - name: pv-tracker2
+          persistentVolumeClaim:
+            claimName: pvc-tracker2
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/gathering
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        name: getnewdata
+        volumeMounts:
+          - mountPath: /app
+            name: pv-workflow2
+          - mountPath: /mlflow
+            name: pv-tracker2
+      restartPolicy: Always

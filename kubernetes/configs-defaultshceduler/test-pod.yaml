@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: antiaffinity-pod
+spec:
+  containers:
+  - name: antiaffinity-pod
+    image: progrium/stress
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]
+

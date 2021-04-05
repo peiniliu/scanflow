@@ -2,7 +2,7 @@ version: '3'
 services:
   preprocessing_new_data:
     image: preprocessing_new_data
-    container_name: preprocessing_new_data-20200303143337
+    container_name: preprocessing_new_data-20210107114629
     networks:
     - network-workflow3
     depends_on:
@@ -10,15 +10,15 @@ services:
     environment:
       MLFLOW_TRACKING_URI: http://tracker-workflow3:8003
     volumes:
-    - /home/guess/Desktop/scanflow/examples/demo3/data-eng/:/app
-    - /home/guess/Desktop/scanflow/examples/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow3:/mlflow
+    - /gpfs/bsc_home/xpliu/scanflow/examples/demo3/data-eng/:/app
+    - /gpfs/bsc_home/xpliu/scanflow/examples/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow3:/mlflow
   tracker-workflow3:
     image: tracker-workflow3
-    container_name: tracker-workflow3-20200303143337
+    container_name: tracker-workflow3-20210107114629
     networks:
     - network-workflow3
     volumes:
-    - /home/guess/Desktop/scanflow/examples/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow3:/mlflow
+    - /gpfs/bsc_home/xpliu/scanflow/examples/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow3:/mlflow
     ports:
     - 8008:8003
 networks:

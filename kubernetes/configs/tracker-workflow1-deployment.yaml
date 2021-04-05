@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-workflow1
+  labels:
+    app: tracker-workflow1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-workflow1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: tracker-workflow1
+    spec:
+      containers:
+        - image: 172.30.0.49:5000/tracker-workflow1
+          imagePullPolicy: IfNotPresent
+          name: tracker-workflow1
+          ports:
+            - containerPort: 8001
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /mlflow
+              name: tracker-workflow1-hostpath0
+      restartPolicy: Always
+      volumes:
+        - name: tracker-workflow1-hostpath0
+          hostPath:
+            path: /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-science/ad-stuff/ad-tracker/tracker-workflow1

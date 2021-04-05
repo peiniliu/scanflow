@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gathering-delete
+  name: gathering-delete
+  namespace: argo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gathering
+  template:
+    metadata:
+      labels:
+        app: gathering
+    spec:
+      volumes:
+        - name: pv-workflow
+          persistentVolumeClaim:
+            claimName: pvcleafmodel
+        - name: pv-tracker
+          persistentVolumeClaim:
+            claimName: pvcleaftracker
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodename
+                operator: In
+                values:
+                - nxt2030
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/gathering
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        name: gathering
+        resources: 
+           requests: 
+             memory: "128Mi" 
+             cpu: "1" 
+           limits: 
+             memory: "128Mi" 
+             cpu: "1"
+        volumeMounts:
+          - mountPath: /app
+            name: pv-workflow
+          - mountPath: /mlflow
+            name: pv-tracker
+      restartPolicy: Always

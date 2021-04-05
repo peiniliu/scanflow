@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: modeling
+  name: modeling
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modeling
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: modeling
+    spec:
+      volumes:
+        - name: pv-workflow
+          persistentVolumeClaim:
+            claimName: pvc-workflow
+        - name: pv-tracker
+          persistentVolumeClaim:
+            claimName: pvc-tracker
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodename
+                operator: In
+                values:
+                - nxt2026
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/modeling
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        name: modeling
+        volumeMounts:
+        - mountPath: /app
+          name: pv-workflow
+        - mountPath: /mlflow
+          name: pv-tracker
+      restartPolicy: Always
+status: {}

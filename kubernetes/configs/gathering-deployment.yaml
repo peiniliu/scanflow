@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gathering
+  name: gathering
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gathering
+  template:
+    metadata:
+      labels:
+        app: gathering
+    spec:
+      containers:
+#      - env:
+#        - name: MLFLOW_TRACKING_URI
+#          value: http://tracker-workflow1:8001
+      - image: 172.30.0.49:5000/gathering
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        name: gathering
+        volumeMounts:
+          - mountPath: /app
+            name: gathering-hostpath0
+          - mountPath: /mlflow
+            name: gathering-hostpath1
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-science
+        name: gathering-hostpath0
+      - hostPath:
+          path: /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-science/ad-stuff/ad-tracker/tracker-workflow1
+        name: gathering-hostpath1

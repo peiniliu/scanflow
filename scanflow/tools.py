@@ -669,7 +669,8 @@ def predict(input_path, port=5001):
     Returns:
         response_json (dict): prediction.
     """
-    url = f'http://localhost:{port}/invocations'
+    #url = f'http://localhost:{port}/invocations'
+    url = f'http://10.244.71.241:8080/invocations'
 
     try:
         input_df = pd.read_csv(input_path)
@@ -681,6 +682,8 @@ def predict(input_path, port=5001):
         response = requests.post(
             url=url, data=json.dumps(input_data_json),
             headers={"Content-type": "application/json; format=pandas-split"})
+        logging.info(f'Input data json..url:{url}....data:{data}...headers:{headers}')
+
         response_json = json.loads(response.text)
 
         end = time.time()

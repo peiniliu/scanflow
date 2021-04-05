@@ -1,0 +1,15 @@
+artifact_uri: file:///home/guess/Desktop/scanflow/examples/demo2/data-science/workflow/mlruns/0/7860d99cdf794cc2b7745a4f9cb21d67/artifacts
+end_time: 1607598533810
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 7860d99cdf794cc2b7745a4f9cb21d67
+run_uuid: 7860d99cdf794cc2b7745a4f9cb21d67
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1607598533731
+status: 4
+tags: []
+user_id: xpliu

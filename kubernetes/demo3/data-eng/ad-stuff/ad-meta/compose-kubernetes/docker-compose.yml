@@ -1,0 +1,37 @@
+version: '3'
+services:
+  getnewdata:
+    image: getnewdata
+    container_name: getnewdata-20210108095411
+    networks:
+    - network-workflow2
+    depends_on:
+    - tracker-workflow2
+    environment:
+      MLFLOW_TRACKING_URI: http://tracker-workflow2:8002
+    volumes:
+    - /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-eng/:/app
+    - /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow2:/mlflow
+  preprocessingnewdata:
+    image: preprocessingnewdata
+    container_name: preprocessingnewdata-20210108095411
+    networks:
+    - network-workflow2
+    depends_on:
+    - tracker-workflow2
+    environment:
+      MLFLOW_TRACKING_URI: http://tracker-workflow2:8002
+    volumes:
+    - /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-eng/:/app
+    - /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow2:/mlflow
+  tracker-workflow2:
+    image: tracker-workflow2
+    container_name: tracker-workflow2-20210108095411
+    networks:
+    - network-workflow2
+    volumes:
+    - /gpfs/bsc_home/xpliu/scanflow/kubernetes/demo3/data-eng/ad-stuff/ad-tracker/tracker-workflow2:/mlflow
+    ports:
+    - 8007:8002
+networks:
+  network_workflow2: null
